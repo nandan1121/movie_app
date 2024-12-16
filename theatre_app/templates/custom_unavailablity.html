@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Unavailability</title>
+</head>
+<body>
+    <h1>Mark Custom Unavailability</h1>
+    <form method="POST" action="{% url 'custom_unavailability' theater_id %}">
+        {% csrf_token %}
+        <label for="screen_id">Select Screen:</label>
+        <select name="screen_id">
+            {% for screen in screens %}
+                <option value="{{ screen.id }}">{{ screen.name }}</option>
+            {% endfor %}
+        </select>
+
+        <h3>Unavailable Slots</h3>
+        <div id="slots-container">
+            <div>
+                <label>Date:</label>
+                <input type="date" name="unavailable_slots[0][date]">
+                <label>Start Time:</label>
+                <input type="time" name="unavailable_slots[0][start]">
+                <label>End Time:</label>
+                <input type="time" name="unavailable_slots[0][end]">
+            </div>
+        </div>
+        <button type="button" onclick="addSlot()">Add Another Slot</button>
+
+        <h3>Unavailable Dates</h3>
+        <div id="dates-container">
+            <div>
+                <label>Date:</label>
+                <input type="date" name="unavailable_dates[]">
+            </div>
+        </div>
+        <button type="button" onclick="addDate()">Add Another Date</button>
+
+        <button type="submit">Submit</button>
+    </form>
+
+    <script>
+        function addSlot() {
+            const container = document.getElementById('slots-container');
+            const index = container.children.length;
+            const newSlot = `
+                <div>
+                    <label>Date:</label>
+                    <input type="date" name="unavailable_slots[${index}][date]">
+                    <label>Start Time:</label>
+                    <input type="time" name="unavailable_slots[${index}][start]">
+                    <label>End Time:</label>
+                    <input type="time" name="unavailable_slots[${index}][end]">
+                </div>`;
+            container.insertAdjacentHTML('beforeend', newSlot);
+        }
+
+        function addDate() {
+            const container = document.getElementById('dates-container');
+            const newDate = `
+                <div>
+                    <label>Date:</label>
+                    <input type="date" name="unavailable_dates[]">
+                </div>`;
+            container.insertAdjacentHTML('beforeend', newDate);
+        }
+    </script>
+</body>
+</html>

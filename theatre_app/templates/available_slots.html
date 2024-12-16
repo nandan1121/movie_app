@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Slots</title>
+</head>
+<body>
+    <h1>Available Slots</h1>
+    <form method="GET" action="{% url 'available_slots' theater_id %}">
+        <label for="screen_id">Select Screen:</label>
+        <select name="screen_id">
+            {% for screen in screens %}
+                <option value="{{ screen.id }}">{{ screen.name }}</option>
+            {% endfor %}
+        </select>
+
+        <label>Start Date:</label>
+        <input type="date" name="start_date">
+        <label>End Date:</label>
+        <input type="date" name="end_date">
+        <button type="submit">Get Slots</button>
+    </form>
+
+    {% if slots %}
+        <h2>Available Slots</h2>
+        <ul>
+            {% for slot in slots %}
+                <li>{{ slot.start }} to {{ slot.end }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No slots available for the selected criteria.</p>
+    {% endif %}
+</body>
+</html>

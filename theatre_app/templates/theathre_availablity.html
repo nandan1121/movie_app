@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Theater Availability Configuration</title>
+</head>
+<body>
+    <h1>Configure Weekly Schedule</h1>
+    <form method="POST" action="{% url 'theater_availability' theater_id %}">
+        {% csrf_token %}
+        <h3>Weekly Schedule</h3>
+        {% for day in days_of_week %}
+            <div>
+                <label>{{ day }} Open Time:</label>
+                <input type="time" name="weekly_schedule[{{ day }}][open]">
+                <label>Close Time:</label>
+                <input type="time" name="weekly_schedule[{{ day }}][close]">
+            </div>
+        {% endfor %}
+
+        <h3>Weekly Unavailability</h3>
+        {% for day in days_of_week %}
+            <div>
+                <label>{{ day }} Maintenance Start Time:</label>
+                <input type="time" name="weekly_unavailability[{{ day }}][0][start]">
+                <label>End Time:</label>
+                <input type="time" name="weekly_unavailability[{{ day }}][0][end]">
+            </div>
+        {% endfor %}
+        <button type="submit">Save Configuration</button>
+    </form>
+</body>
+</html>
